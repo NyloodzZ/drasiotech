@@ -2,7 +2,7 @@
   "name": "drasiotech",
   "version": "0.0.1",
   "description": "",
-  "private": false,
+  "private": true,
   "keywords": [
     ""
   ],
