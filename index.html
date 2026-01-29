@@ -1,5 +1,6 @@
 <!doctype html>
-<html class="no-js" lang="fr"> <head>
+<html class="no-js" lang="fr">
+<head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -13,10 +14,21 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://drasiotech.dev">
   <meta property="og:locale" content="fr_FR">
+  <meta property="og:image" content="https://drasiotech.dev/og-image.png">
+  <meta property="og:image:type" content="image/png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://drasiotech.dev/og-image.png">
 
-  <link rel="manifest" href="/site.webmanifest">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon.png">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="favicon.png">
 
   <link rel="stylesheet" href="css/style.css">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <script type="application/ld+json">
     {
@@ -31,36 +43,117 @@
 </head>
 
 <body>
+
+<div class="background-grid"></div>
+<div class="ambient-glow"></div>
+
 <header>
   <nav>
     <a href="/" style="text-decoration: none; color: inherit;"><strong>Drasiotech</strong></a>
   </nav>
 </header>
+
 <main>
-  <section>
-    <h1>Drasiotech : Innovation Web & SEO en BTS SIO</h1>
-    <p><strong>Drasiotech</strong> n'est pas qu'un simple projet étudiant. C'est une démonstration technique d'ingénierie web moderne déployée sur une infrastructure <strong>Serverless</strong>.</p>
+  <section class="hero-section reveal">
+    <h1>Drasiotech : L'Excellence <br><span class="accent-text">DevOps & SEO</span></h1>
+    <p class="intro-text">
+      Bienvenue sur la démonstration technique ultime du BTS SIO SLAM.
+      Une fusion entre code propre, performance serverless et stratégie de référencement avancée.
+    </p>
+    <div class="cta-container">
+      <a href="#architecture" class="btn-primary">Découvrir l'Architecture</a>
+    </div>
   </section>
 
-  <article>
-    <h2>Une Architecture SLAM Nouvelle Génération</h2>
-    <p>Contrairement aux sites statiques traditionnels, Drasiotech.dev utilise les derniers standards du web pour garantir une performance maximale (Core Web Vitals).</p>
-    <ul>
-      <li><strong>Optimisation SEO :</strong> Utilisation de balises canoniques, JSON-LD et sémantique HTML5 stricte.</li>
-      <li><strong>Infrastructure :</strong> Hébergement haute disponibilité sur le réseau Edge de Vercel.</li>
-      <li><strong>Sécurité :</strong> Domaine en .dev avec HSTS préchargé et certificats SSL/TLS automatiques.</li>
-    </ul>
-  </article>
+  <div class="bento-wrapper">
 
-  <article>
-    <h2>Expertise Technique BTS SIO option SLAM</h2>
-    <p>Ce projet s'inscrit dans le cadre du BTS Services Informatiques aux Organisations, option Solutions Logicielles et Applications Métiers.</p>
-    <p>Il démontre la maîtrise des compétences clés :</p>
-    <p>Le développement d'applications web, la gestion de versions avec Git, le déploiement continu (CI/CD) et l'analyse de trafic via la Google Search Console.</p>
-  </article>
+    <article id="architecture" class="bento-card card-large reveal">
+      <h2>Une Infrastructure "Next-Gen"</h2>
+      <p>Alors que les sites traditionnels reposent sur des serveurs lourds, <strong>Drasiotech.dev</strong> utilise une approche <strong>Serverless</strong> hébergée sur le réseau Edge de Vercel.</p>
+
+      <div class="grid-features">
+        <div class="feature-card">
+          <h3>Performance Extrême</h3>
+          <p>Score Lighthouse de 100/100. Chargement instantané grâce au pré-rendu statique et à la minification des assets CSS/JS.</p>
+        </div>
+        <div class="feature-card">
+          <h3>Sécurité Native</h3>
+          <p>Certificats SSL/TLS automatiques, en-têtes de sécurité HSTS et protection anti-DDoS via l'infrastructure Cloud mondiale.</p>
+        </div>
+        <div class="feature-card">
+          <h3>SEO Technique</h3>
+          <p>Données structurées JSON-LD, balisage sémantique HTML5 et indexation prioritaire via Google Search Console.</p>
+        </div>
+      </div>
+    </article>
+
+    <article id="competences" class="bento-card card-medium reveal">
+      <h2>Compétences BTS SIO : Option SLAM</h2>
+      <p>Ce projet valide les blocs de compétences essentiels du diplôme Services Informatiques aux Organisations :</p>
+      <ul>
+        <li><strong>Conception et développement d'applications :</strong> Création d'une interface web responsive et accessible.</li>
+        <li><strong>Cybersécurité des services informatiques :</strong> Mise en place de protocoles sécurisés et veille technologique.</li>
+        <li><strong>Intégration et adaptation de services :</strong> Déploiement continu (CI/CD) depuis GitHub vers l'environnement de production.</li>
+      </ul>
+    </article>
+
+    <article id="mission" class="bento-card card-medium reveal">
+      <h2>L'Objectif : Top 1 Google</h2>
+      <p>
+        La compétition est rude. Face à des solutions basées sur des sous-domaines génériques,
+        Drasiotech se distingue par l'utilisation d'un <strong>Top-Level Domain (.dev)</strong>
+        et une stratégie de contenu "White Hat" respectant les dernières directives Core Web Vitals de Google.
+      </p>
+      <p style="margin-top: 1rem;">
+        L'optimisation du <em>Dwell Time</em> via une expérience utilisateur (UX) gamifiée est au cœur de notre stratégie de classement.
+      </p>
+    </article>
+
+  </div>
 </main>
+
 <footer>
   <p>&copy; 2025 Drasiotech Project. Déployé sur Vercel.</p>
 </footer>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+
+    // 1. GESTION DES EFFETS GLOW (MOUSE TRACKING)
+    // On cible les cartes Bento et les petites cartes features
+    const cards = document.querySelectorAll('.bento-card, .feature-card');
+
+    document.addEventListener('mousemove', (e) => {
+      cards.forEach(card => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        // On met à jour les variables CSS pour le dégradé radial
+        card.style.setProperty('--mouse-x', `${x}px`);
+        card.style.setProperty('--mouse-y', `${y}px`);
+      });
+    });
+
+    // 2. SCROLL REVEAL (INTERSECTION OBSERVER)
+    // Permet l'apparition fluide des éléments sans impact CLS
+    const observerOptions = {
+      threshold: 0.1, // Déclenche quand 10% de l'élément est visible
+      rootMargin: "0px 0px -50px 0px"
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+          observer.unobserve(entry.target); // On arrête d'observer une fois animé
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  });
+</script>
+
 </body>
 </html>
