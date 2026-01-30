@@ -355,6 +355,75 @@
       font-size: 0.9rem;
       margin-top: 4rem;
     }
+
+    .tech-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+      margin-top: 1.5rem;
+    }
+
+    .tech-list dt {
+      color: var(--text-main);
+      font-weight: 700;
+      font-size: 1.1rem;
+      margin-bottom: 0.3rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tech-list dt::before {
+      content: "›";
+      color: var(--accent-primary);
+      font-weight: 800;
+    }
+
+    .tech-list dd {
+      color: var(--text-muted);
+      margin-left: 1.2rem;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      border-left: 2px solid rgba(255, 255, 255, 0.1);
+      padding-left: 10px;
+    }
+
+    .specs-container {
+      margin: 2rem 0;
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 8px;
+      padding: 1rem;
+      border: 1px solid var(--border-color);
+    }
+
+    .tech-specs {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+
+    .tech-specs caption {
+      display: none;
+    }
+
+    .tech-specs th {
+      text-align: left;
+      color: var(--text-muted);
+      font-weight: 500;
+      padding: 8px 0;
+      width: 40%;
+    }
+
+    .tech-specs td {
+      text-align: right;
+      color: var(--text-main);
+      font-weight: 700;
+      padding: 8px 0;
+    }
+
+    .tech-specs tr:not(:last-child) {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
   </style>
 </head>
 
@@ -387,6 +456,28 @@
       <h2>Une Infrastructure "Next-Gen"</h2>
       <p>Alors que les sites traditionnels reposent sur des serveurs lourds, <strong>Drasiotech.dev</strong> utilise une approche <strong>Serverless</strong> hébergée sur le réseau Edge de Vercel.</p>
 
+      <div class="specs-container">
+        <table class="tech-specs">
+          <caption>Spécifications Techniques</caption>
+          <tr>
+            <th>Performance (Lighthouse)</th>
+            <td>100/100 (Mobile & Desktop)</td>
+          </tr>
+          <tr>
+            <th>Architecture</th>
+            <td>Serverless / Edge Network</td>
+          </tr>
+          <tr>
+            <th>Temps de Chargement (LCP)</th>
+            <td>&lt; 0.2s (Instant Load)</td>
+          </tr>
+          <tr>
+            <th>Sécurité</th>
+            <td>SSL/TLS + WAF + DDoS Shield</td>
+          </tr>
+        </table>
+      </div>
+
       <div class="grid-features">
         <div class="feature-card">
           <h3>Performance Extrême</h3>
@@ -406,11 +497,22 @@
     <article id="competences" class="bento-card card-medium reveal">
       <h2>Compétences BTS SIO : Option SLAM</h2>
       <p>Ce projet valide les blocs de compétences essentiels du diplôme Services Informatiques aux Organisations :</p>
-      <ul>
-        <li><strong>Conception et développement d'applications :</strong> Création d'une interface web responsive et accessible.</li>
-        <li><strong>Cybersécurité des services informatiques :</strong> Mise en place de protocoles sécurisés et veille technologique.</li>
-        <li><strong>Intégration et adaptation de services :</strong> Déploiement continu (CI/CD) depuis GitHub vers l'environnement de production.</li>
-      </ul>
+      <dl class="tech-list">
+        <div class="list-item">
+          <dt>Conception d'applications</dt>
+          <dd>Architecture SPA (Single Page App) sans framework lourd, optimisée pour le Core Web Vitals.</dd>
+        </div>
+
+        <div class="list-item">
+          <dt>Cybersécurité (SecOps)</dt>
+          <dd>Protection Edge via WAF Vercel, en-têtes de sécurité HSTS et mitigation DDoS automatisée.</dd>
+        </div>
+
+        <div class="list-item">
+          <dt>Intégration Continue (CI/CD)</dt>
+          <dd>Pipeline de déploiement automatisé GitHub vers Vercel avec tests de build pré-production.</dd>
+        </div>
+      </dl>
     </article>
 
     <article id="mission" class="bento-card card-medium reveal">
