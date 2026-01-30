@@ -1,62 +1,208 @@
 <!doctype html>
-<html lang="en">
-
+<html lang="fr">
 <head>
   <meta charset="utf-8">
-  <title>Page Not Found</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>404 - Perdu dans la Matrice | Drasiotech</title>
   <style>
-    * {
-      line-height: 1.2;
-      margin: 0;
-    }
 
-    html {
-      color: #888;
-      display: table;
-      font-family: sans-serif;
-      height: 100%;
-      text-align: center;
-      width: 100%;
+    :root {
+      --bg-deep: #050505;
+      --text-main: #ededed;
+      --accent: #0070f3;
+      --snake-body: #0070f3;
+      --snake-head: #ffffff;
+      --food: #ff0080;
     }
 
     body {
-      display: table-cell;
-      vertical-align: middle;
-      margin: 2em auto;
+      background-color: var(--bg-deep);
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      overflow: hidden;
+      text-align: center;
     }
 
-    h1 {
-      color: #555;
-      font-size: 2em;
-      font-weight: 400;
+    h1 { margin: 0 0 10px 0; font-size: 4rem; letter-spacing: -3px; }
+    p { color: #888; margin-bottom: 20px; }
+
+    #game-container {
+      position: relative;
+      border: 1px solid #333;
+      box-shadow: 0 0 50px rgba(0, 112, 243, 0.15);
+      border-radius: 12px;
+      overflow: hidden;
     }
 
-    p {
-      margin: 0 auto;
-      width: 280px;
+    canvas {
+      display: block;
+      background: rgba(20, 20, 20, 0.5);
     }
 
-    @media only screen and (max-width: 280px) {
+    .btn-home {
+      margin-top: 30px;
+      padding: 10px 25px;
+      background: var(--text-main);
+      color: black;
+      text-decoration: none;
+      font-weight: bold;
+      border-radius: 50px;
+      transition: transform 0.2s;
+      display: inline-block;
+    }
+    .btn-home:hover { transform: scale(1.05); }
 
-      body,
-      p {
-        width: 95%;
-      }
+    .score-board {
+      font-family: monospace;
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+      color: var(--accent);
+    }
 
-      h1 {
-        font-size: 1.5em;
-        margin: 0 0 0.3em;
-      }
 
+    #overlay {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.8);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
     }
   </style>
 </head>
-
 <body>
-  <h1>Page Not Found</h1>
-  <p>Sorry, but the page you were trying to view does not exist.</p>
-</body>
 
+<h1>404</h1>
+<p>Page introuvable. Mais ne repartez pas les mains vides.</p>
+
+<div class="score-board">Score : <span id="score">0</span></div>
+
+<div id="game-container">
+  <canvas id="gameCanvas" width="400" height="400"></canvas>
+  <div id="overlay">
+    <span style="font-size: 2rem;">CLIQUEZ POUR JOUER</span>
+    <span style="font-size: 0.9rem; color: #888; margin-top: 10px;">Flèches pour bouger</span>
+  </div>
+</div>
+
+<a href="/" class="btn-home">Retour à la base</a>
+
+<script>
+  // --- LE MOTEUR DU JEU (Vanilla JS) ---
+  const canvas = document.getElementById('gameCanvas');
+  const ctx = canvas.getContext('2d');
+  const overlay = document.getElementById('overlay');
+  const scoreEl = document.getElementById('score');
+
+  const gridSize = 20;
+  const tileCount = canvas.width / gridSize;
+
+  let score = 0;
+  let velocity = { x: 0, y: 0 };
+  let trail = [];
+  let tail = 5;
+  let player = { x: 10, y: 10 };
+  let food = { x: 15, y: 15 };
+  let isRunning = false;
+  let gameInterval;
+
+
+  document.addEventListener('keydown', keyPush);
+
+  overlay.addEventListener('click', startGame);
+
+  function startGame() {
+    if(isRunning) return;
+    isRunning = true;
+    overlay.style.display = 'none';
+    score = 0;
+    tail = 5;
+    scoreEl.innerText = score;
+    player = { x: 10, y: 10 };
+    velocity = { x: 1, y: 0 };
+    gameInterval = setInterval(game, 1000 / 15);
+  }
+
+  function game() {
+    player.x += velocity.x;
+    player.y += velocity.y;
+
+
+    if (player.x < 0) player.x = tileCount - 1;
+    if (player.x > tileCount - 1) player.x = 0;
+    if (player.y < 0) player.y = tileCount - 1;
+    if (player.y > tileCount - 1) player.y = 0;
+
+
+    ctx.fillStyle = '#111';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+
+    for (let i = 0; i < trail.length; i++) {
+
+      ctx.fillStyle = (i === trail.length - 1) ? '#ffffff' : '#0070f3';
+      ctx.fillRect(trail[i].x * gridSize, trail[i].y * gridSize, gridSize - 2, gridSize - 2);
+
+
+      if (trail[i].x === player.x && trail[i].y === player.y) {
+        gameOver();
+      }
+    }
+
+    trail.push({ x: player.x, y: player.y });
+    while (trail.length > tail) {
+      trail.shift();
+    }
+
+
+    ctx.fillStyle = '#ff0080';
+    ctx.fillRect(food.x * gridSize, food.y * gridSize, gridSize - 2, gridSize - 2);
+
+
+    if (food.x === player.x && food.y === player.y) {
+      tail++;
+      score += 10;
+      scoreEl.innerText = score;
+
+      food.x = Math.floor(Math.random() * tileCount);
+      food.y = Math.floor(Math.random() * tileCount);
+    }
+  }
+
+  function keyPush(evt) {
+    if(!isRunning) return;
+    switch (evt.keyCode) {
+      case 37:
+        if (velocity.x !== 1) { velocity.x = -1; velocity.y = 0; }
+        break;
+      case 38:
+        if (velocity.y !== 1) { velocity.x = 0; velocity.y = -1; }
+        break;
+      case 39:
+        if (velocity.x !== -1) { velocity.x = 1; velocity.y = 0; }
+        break;
+      case 40:
+        if (velocity.y !== -1) { velocity.x = 0; velocity.y = 1; }
+        break;
+    }
+  }
+
+  function gameOver() {
+    clearInterval(gameInterval);
+    isRunning = false;
+    overlay.style.display = 'flex';
+    overlay.innerHTML = `<span style="font-size:2rem;color:#ff0080">GAME OVER</span><br>Score: ${score}<br><span style="font-size:0.9rem;margin-top:10px">Cliquez pour rejouer</span>`;
+  }
+</script>
+</body>
 </html>
-<!-- IE needs 512+ bytes: https://docs.microsoft.com/archive/blogs/ieinternals/friendly-http-error-pages -->
