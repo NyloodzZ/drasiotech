@@ -86,7 +86,6 @@ npm start
 **Clément DELACOUX / Gabriel MANSET**
 
 * [![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/TonPseudo)
-* [![YouTube](https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://www.youtube.com/@drasiotech_officiel)
 * [![Website](https://img.shields.io/badge/Portfolio-Drasiotech.dev-0070f3?style=for-the-badge&logo=vercel&logoColor=white)](https://drasiotech.dev)
 
 ---
