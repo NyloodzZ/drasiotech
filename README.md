@@ -73,7 +73,7 @@ Si vous souhaitez auditer le code ou tester la performance en local :
 
 ```bash
 # 1. Cloner le repo
-git clone [https://github.com/TonPseudo/drasiotech.git](https://github.com/TonPseudo/drasiotech.git)
+git clone [https://github.com/NyloodzZ/drasiotech.git](https://github.com/NyloodzZ/drasiotech.git)
 
 # 2. Installer les dépendances (Webpack)
 npm install
@@ -81,9 +81,9 @@ npm install
 # 3. Lancer le serveur de développement
 npm start
 ```
-## 👤 Auteur
+## 👤 Auteurs
 
-**Ton Prénom Nom** - *Lead Developer & SEO Strategist*
+**Clément DELACOUX / Gabriel MANSET**
 
 * [![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/TonPseudo)
 * [![YouTube](https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://www.youtube.com/@drasiotech_officiel)
