@@ -431,7 +431,7 @@
     .dev-footer {
       width: 100%;
       border-top: 1px solid rgba(255, 255, 255, 0.1);
-      background: #000; /* Ou rgba(5,5,5,0.95) pour matcher le header */
+      background: #000;
       padding: 15px 0;
       margin-top: 4rem;
     }
@@ -452,7 +452,8 @@
       gap: 12px;
       font-family: 'SF Mono', 'Fira Code', monospace;
       font-size: 0.8rem;
-      color: #666;
+      /* CORRECTION ACCESSIBILITÉ : On éclaircit le gris pour le contraste AAA */
+      color: #a1a1a1;
     }
 
     .status-dot {
@@ -473,7 +474,8 @@
       align-items: center;
       gap: 6px;
       text-decoration: none;
-      color: #888;
+      /* CORRECTION ACCESSIBILITÉ : Même chose ici */
+      color: #a1a1a1;
       font-size: 0.8rem;
       font-family: system-ui, sans-serif;
       font-weight: 500;
@@ -600,7 +602,7 @@
   <div class="footer-content">
 
     <div class="footer-left">
-      <span class="mono">© 2025 Drasiotech</span>
+      <span class="mono">© 2025 Drasiotech_</span>
       <span class="status-dot"></span>
       <span class="system-status">Systems Operational</span>
     </div>
