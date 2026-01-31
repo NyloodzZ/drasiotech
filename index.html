@@ -21,7 +21,6 @@
 
   <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
   <link rel="icon" type="image/png" sizes="16x16" href="favicon.png">
-
   <link rel="apple-touch-icon" sizes="180x180" href="favicon.png">
 
   <script type="application/ld+json">
@@ -86,6 +85,9 @@
       line-height: 1.6;
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
     }
 
     .background-grid {
@@ -144,6 +146,7 @@
       max-width: 1100px;
       margin: 0 auto;
       padding: 4rem 20px 6rem 20px;
+      flex: 1; /* Pousse le footer vers le bas */
     }
 
     .hero-section {
@@ -348,7 +351,7 @@
     .reveal {
       opacity: 0;
       transform: translateY(30px);
-      transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); /* Easing "Apple" */
+      transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .reveal.active {
@@ -356,15 +359,7 @@
       transform: translateY(0);
     }
 
-    footer {
-      text-align: center;
-      padding: 4rem 0;
-      border-top: 1px solid var(--border-color);
-      color: var(--text-muted);
-      font-size: 0.9rem;
-      margin-top: 4rem;
-    }
-
+    /* --- TECH LIST & TABLE (SGE OPTIMIZED) --- */
     .tech-list {
       display: flex;
       flex-direction: column;
@@ -411,9 +406,7 @@
       font-size: 0.9rem;
     }
 
-    .tech-specs caption {
-      display: none;
-    }
+    .tech-specs caption { display: none; }
 
     .tech-specs th {
       text-align: left;
@@ -432,6 +425,70 @@
 
     .tech-specs tr:not(:last-child) {
       border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    /* --- FOOTER SINGLE LINE (Clean & Pro) --- */
+    .dev-footer {
+      width: 100%;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      background: #000; /* Ou rgba(5,5,5,0.95) pour matcher le header */
+      padding: 15px 0;
+      margin-top: 4rem;
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: nowrap;
+    }
+
+    .footer-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 0.8rem;
+      color: #666;
+    }
+
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      background-color: #00ff00;
+      border-radius: 50%;
+      box-shadow: 0 0 5px #00ff00;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 20px;
+    }
+
+    .social-link {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      color: #888;
+      font-size: 0.8rem;
+      font-family: system-ui, sans-serif;
+      font-weight: 500;
+      transition: color 0.2s ease;
+    }
+
+    .social-link:hover {
+      color: #fff;
+    }
+
+    @media (max-width: 600px) {
+      .footer-content {
+        flex-direction: column;
+        gap: 10px;
+      }
     }
   </style>
 </head>
@@ -539,27 +596,41 @@
   </div>
 </main>
 
-<footer>
-  <p>&copy; 2025 Drasiotech Project. Déployé sur Vercel.</p>
+<footer class="dev-footer">
+  <div class="footer-content">
+
+    <div class="footer-left">
+      <span class="mono">© 2025 Drasiotech</span>
+      <span class="status-dot"></span>
+      <span class="system-status">Systems Operational</span>
+    </div>
+
+    <div class="footer-links">
+      <a href="https://github.com/NyloodzZ/drasiotech" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="GitHub Repo">
+        <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+        </svg>
+        <span class="link-text">GitHub</span>
+      </a>
+    </div>
+  </div>
 </footer>
 
 <script>
   document.addEventListener("DOMContentLoaded", () => {
-
+    // Mouse Glow Effect
     const cards = document.querySelectorAll('.bento-card, .feature-card');
-
     document.addEventListener('mousemove', (e) => {
       cards.forEach(card => {
         const rect = card.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
-
         card.style.setProperty('--mouse-x', `${x}px`);
         card.style.setProperty('--mouse-y', `${y}px`);
       });
     });
 
-
+    // Reveal Animation
     const observerOptions = {
       threshold: 0.1,
       rootMargin: "0px 0px -50px 0px"
@@ -577,5 +648,6 @@
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
   });
 </script>
+
 </body>
 </html>
