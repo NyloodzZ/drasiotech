@@ -588,6 +588,38 @@
       line-height: 1.5;
     }
 
+    .separator {
+      color: #333;
+      margin: 0 10px;
+    }
+
+    .secret-terminal {
+      text-decoration: none;
+      margin-left: 15px;
+      font-family: 'Courier New', Courier, monospace;
+      font-weight: bold;
+      font-size: 1.1rem;
+      color: #333;
+      transition: all 0.3s ease;
+      padding: 2px 5px;
+      border-radius: 4px;
+    }
+
+    .secret-terminal:hover {
+      background-color: rgba(255, 0, 0, 0.1);
+      color: #ff3333;
+      box-shadow: 0 0 10px rgba(255, 0, 0, 0.4);
+    }
+
+    .blink-cursor {
+      animation: blink 1s step-end infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
   </style>
 </head>
 
@@ -736,11 +768,15 @@
 
     <div class="footer-left">
       <span class="mono">© 2025 Drasiotech</span>
-      <a href="/404" aria-label="Zone Secrète" style="text-decoration:none;">
-        <span class="status-dot" style="cursor: pointer;" title="Lancer le protocole d'urgence"></span>
-      </a>
+
+      <span class="separator">|</span>
+
       <span class="status-dot"></span>
       <span class="system-status">Systems Operational</span>
+
+      <a href="/404" class="secret-terminal" aria-label="Accès Backdoor" title="Injecter le Payload (Snake)">
+        <span class="prompt-sign">></span><span class="blink-cursor">_</span>
+      </a>
     </div>
 
 
