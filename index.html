@@ -620,6 +620,19 @@
       50% { opacity: 0; }
     }
 
+    @media (max-width: 768px) {
+      .ambient-glow {
+        animation: none;
+        filter: blur(40px);
+        opacity: 0.4;
+      }
+
+      .background-grid {
+        mask-image: none;
+        -webkit-mask-image: none;
+      }
+    }
+
   </style>
 </head>
 
@@ -653,9 +666,11 @@
 
       <div class="video-container" id="video-wrapper" data-id="3IAPPAZSWds">
         <img
-          src="thumbnail-video.jpg"
+          src="thumbnail-video.webp"
           alt="Drasiotech Showcase Performance"
           class="video-thumb"
+          width="800"
+          height="450"
           loading="lazy"
         >
         <button class="play-btn" aria-label="Lancer la vidéo">
