@@ -17,7 +17,7 @@ module.exports = merge(common, {
         { from: 'js/vendor', to: 'js/vendor' },
         { from: 'robots.txt', to: 'robots.txt' },
         { from: '404.html', to: '404.html' },
-        { from: 'favicon.png', to: 'favicon.png' },
+        { from: 'favicon.webp', to: 'favicon.webp' },
         { from: 'og-image.png', to: 'og-image.png' },
       ],
     }),
