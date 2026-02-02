@@ -8,6 +8,7 @@
   <meta name="description" content="Site officiel du projet Drasiotech. Une expérimentation technique en référencement naturel (SEO) et développement web sur l'infrastructure Vercel.">
 
   <link rel="canonical" href="https://drasiotech.dev/">
+  <link rel="preload" as="image" href="thumbnail-video.webp" type="image/webp">
 
   <meta property="og:title" content="Drasiotech - Innovation Web & SEO">
   <meta property="og:description" content="Découvrez le projet Drasiotech : Performance, SEO et Architecture Serverless.">
@@ -671,7 +672,8 @@
           class="video-thumb"
           width="800"
           height="450"
-          loading="lazy"
+          fetchpriority="high"
+          decoding="async"
         >
         <button class="play-btn" aria-label="Lancer la vidéo">
           <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
