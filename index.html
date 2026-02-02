@@ -492,6 +492,67 @@
         gap: 10px;
       }
     }
+
+    .video-container {
+      position: relative;
+      width: 100%;
+      padding-bottom: 56.25%; /* Ratio 16:9 */
+      background-color: #000;
+      border-radius: 8px;
+      overflow: hidden;
+      cursor: pointer;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .video-thumb {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.8;
+      transition: opacity 0.3s ease;
+    }
+
+    .video-container:hover .video-thumb {
+      opacity: 0.6;
+    }
+
+    .play-btn {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 60px; height: 60px;
+      background: rgba(255, 0, 0, 0.9); /* Rouge YouTube */
+      border: none;
+      border-radius: 50%;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 0 20px rgba(255, 0, 0, 0.4);
+      transition: transform 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .play-btn svg {
+      width: 30px; height: 30px;
+      margin-left: 2px;
+    }
+
+    .video-container:hover .play-btn {
+      transform: translate(-50%, -50%) scale(1.1);
+    }
+
+    .video-container iframe {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
   </style>
 </head>
 
@@ -519,6 +580,22 @@
   </section>
 
   <div class="bento-wrapper">
+
+    <article class="bento-card card-large reveal">
+      <h2>Démonstration Technique</h2>
+
+      <div class="video-container" id="video-wrapper" data-id="3IAPPAZSWds">
+        <img
+          src="https://i.ytimg.com/vi/3IAPPAZSWds/maxresdefault.jpg"
+          alt="Drasiotech Showcase"
+          class="video-thumb"
+          loading="lazy"
+        >
+        <button class="play-btn" aria-label="Lancer la vidéo">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+      </div>
+    </article>
 
     <article id="architecture" class="bento-card card-large reveal">
       <h2>Une Infrastructure "Next-Gen"</h2>
@@ -647,8 +724,25 @@
       });
     }, observerOptions);
 
+    const videoWrapper = document.getElementById('video-wrapper');
+    if (videoWrapper) {
+      videoWrapper.addEventListener('click', function() {
+        const videoId = this.getAttribute('data-id');
+        const iframe = document.createElement('iframe');
+
+        iframe.setAttribute('src', `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0`);
+        iframe.setAttribute('frameborder', '0');
+        iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
+        iframe.setAttribute('allowfullscreen', 'true');
+
+        this.innerHTML = '';
+        this.appendChild(iframe);
+      });
+    }
+
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
   });
+
 </script>
 
 </body>
