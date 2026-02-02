@@ -1,15 +1,6 @@
 {
   "headers": [
     {
-      "source": "/:path(.+\\.(?:jpg|jpeg|png|webp|svg|ico|css|js|woff2?)$)",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable"
-        }
-      ]
-    },
-    {
       "source": "/(.*)",
       "headers": [
         {
@@ -27,6 +18,15 @@
         {
           "key": "Cache-Control",
           "value": "public, s-maxage=60, stale-while-revalidate=86400"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)\\.(jpg|jpeg|png|webp|svg|ico|css|js|json)$",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
         }
       ]
     }

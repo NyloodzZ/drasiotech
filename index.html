@@ -662,17 +662,30 @@
       <h2>Démonstration Technique</h2>
 
       <div class="video-container" id="video-wrapper" data-id="3IAPPAZSWds">
-        <img
-          src="thumbnail-desktop.webp"
-          srcset="thumbnail-mobile.webp 400w, thumbnail-desktop.webp 800w"
-          sizes="(max-width: 600px) 400px, 800px"
-          alt="Drasiotech Showcase Performance"
-          class="video-thumb"
-          width="800"
-          height="450"
-          fetchpriority="high"
-          decoding="async"
-        >
+        <picture class="video-thumb-wrapper">
+          <source
+            media="(max-width: 600px)"
+            srcset="thumbnail-mobile.webp"
+            width="400"
+            height="225"
+          >
+
+          <source
+            srcset="thumbnail-desktop.webp"
+            width="800"
+            height="450"
+          >
+
+          <img
+            src="thumbnail-desktop.webp"
+            alt="Drasiotech Showcase Performance"
+            class="video-thumb"
+            width="800"
+            height="447"
+            fetchpriority="high"
+            decoding="async"
+          >
+        </picture>
         <button class="play-btn" aria-label="Lancer la vidéo">
           <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
         </button>
