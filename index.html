@@ -27,31 +27,39 @@
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": "Drasiotech",
-      "url": "https://drasiotech.dev",
-      "logo": {
-        "@type": "ImageObject",
-        "url": "https://drasiotech.dev/favicon.png",
-        "width": 512,
-        "height": 512
-      },
-      "foundingDate": "2026-01-27",
-      "description": "Projet étudiant de référence en SEO, Performance Web et Architecture Serverless (BTS SIO SLAM).",
-      "email": "veilletech122@gmail.com",
-      "sameAs": [
-        "https://github.com/NyloodzZ/drasiotech",
-        "https://www.youtube.com/@drasiotech"
-      ],
-      "founder": {
-        "@type": "Person",
-        "name": "Clément DELACOUX",
-        "jobTitle": "Lead DevOps Engineer",
-        "image": "https://drasiotech.dev/og-image.png",
-        "sameAs": [
-          "https://github.com/NyloodzZ"
-        ]
-      }
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://drasiotech.dev/#organization",
+          "name": "Drasiotech",
+          "url": "https://drasiotech.dev",
+          "logo": "https://drasiotech.dev/favicon.ico",
+          "sameAs": [
+            "https://github.com/NyloodzZ/drasiotech",
+            "https://www.youtube.com/@Drasiotech"
+          ],
+          "founder": {
+            "@type": "Person",
+            "name": "Clément DELACOUX",
+            "url": "https://github.com/NyloodzZ",
+            "sameAs": [
+              "https://www.linkedin.com/in/clement-delacoux-052841368/",
+              "https://github.com/NyloodzZ"
+            ]
+          }
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://drasiotech.dev/#website",
+          "url": "https://drasiotech.dev",
+          "name": "Drasiotech - Performance Web & SEO",
+          "description": "Démonstration technique de performance web extrême (Lighthouse 100/100) et d'architecture No-Framework.",
+          "publisher": {
+            "@id": "https://drasiotech.dev/#organization"
+          },
+          "inLanguage": "fr-FR"
+        }
+      ]
     }
   </script>
   <style>
