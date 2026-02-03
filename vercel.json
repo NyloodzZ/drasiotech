@@ -17,12 +17,12 @@
         },
         {
           "key": "Cache-Control",
-          "value": "public, s-maxage=60, stale-while-revalidate=86400"
+          "value": "public, max-age=0, s-maxage=60, stale-while-revalidate=86400"
         }
       ]
     },
     {
-      "source": "/(.*)\\.(jpg|jpeg|png|webp|svg|ico|css|js|json)$",
+      "source": "/(.*)\\.(jpg|jpeg|png|webp|svg|ico|css|js|json)",
       "headers": [
         {
           "key": "Cache-Control",
