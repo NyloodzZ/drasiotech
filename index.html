@@ -833,43 +833,51 @@
         </div>
       </dl>
     </article>
+    <article class="bento-card card-large reveal">
+      <h3>
+        <span style="font-size: 1.5em;">⚡</span>
+        Benchmark de Performance
+      </h3>
+      <p style="margin-bottom: 20px;">
+        Comparatif en temps réel : Architecture No-Framework (Drasiotech) vs Standards du marché.
+      </p>
 
-    <section style="max-width: 800px; margin: 40px auto; padding: 20px; border: 1px solid #333; border-radius: 10px;">
-      <h2 style="color: #fff;">⚡ Benchmark de Performance : Pourquoi Drasiotech ?</h2>
-      <p style="color: #ccc;">Contrairement aux solutions CMS classiques, notre architecture No-Framework sur Vercel Edge garantit une latence nulle.</p>
-
-      <table style="width: 100%; border-collapse: collapse; margin-top: 20px; color: #fff;">
-        <thead>
-        <tr style="border-bottom: 2px solid #0070f3;">
-          <th style="text-align: left; padding: 10px;">Métrique</th>
-          <th style="color: #0070f3;">Drasiotech (Vanilla JS)</th>
-          <th style="color: #888;">Next.js / React (Moyenne)</th>
-          <th style="color: #888;">WordPress (.fr)</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-          <td style="padding: 10px; border-bottom: 1px solid #333;">LCP (Chargement)</td>
-          <td style="color: #4ade80; font-weight: bold;">0.15s ⚡</td>
-          <td>1.2s</td>
-          <td>2.5s+</td>
-        </tr>
-        <tr>
-          <td style="padding: 10px; border-bottom: 1px solid #333;">Transfer Size</td>
-          <td style="color: #4ade80; font-weight: bold;">4 KiB</td>
-          <td>150 KiB+</td>
-          <td>800 KiB+</td>
-        </tr>
-        <tr>
-          <td style="padding: 10px; border-bottom: 1px solid #333;">Google Score</td>
-          <td style="color: #4ade80; font-weight: bold;">100/100</td>
-          <td>85/100</td>
-          <td>50/100</td>
-        </tr>
-        </tbody>
-      </table>
-      <p style="font-size: 0.8rem; color: #666; margin-top: 10px;">*Données mesurées via Chrome UX Report (CrUX) et Lighthouse CI.</p>
-    </section>
+      <div class="specs-container" style="border: none; background: transparent; padding: 0;">
+        <table style="width: 100%; border-collapse: collapse; color: #fff;">
+          <thead>
+          <tr style="border-bottom: 2px solid #333;">
+            <th style="text-align: left; padding: 15px; color: #888;">Métrique</th>
+            <th style="color: #0070f3; text-align: center;">Drasiotech (.dev)</th>
+            <th style="color: #666; text-align: center;">Next.js / React</th>
+            <th style="color: #666; text-align: center;">WordPress (.fr)</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+            <td style="padding: 15px; font-weight: bold;">LCP (Vitesse)</td>
+            <td style="color: #4ade80; font-weight: bold; text-align: center; background: rgba(74, 222, 128, 0.1);">0.15s ⚡</td>
+            <td style="text-align: center;">1.2s</td>
+            <td style="text-align: center;">2.5s+</td>
+          </tr>
+          <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+            <td style="padding: 15px; font-weight: bold;">Poids Page</td>
+            <td style="color: #4ade80; font-weight: bold; text-align: center; background: rgba(74, 222, 128, 0.1);">4 KiB</td>
+            <td style="text-align: center;">150 KiB+</td>
+            <td style="text-align: center;">800 KiB+</td>
+          </tr>
+          <tr>
+            <td style="padding: 15px; font-weight: bold;">Score Google</td>
+            <td style="color: #4ade80; font-weight: bold; text-align: center; background: rgba(74, 222, 128, 0.1);">100/100</td>
+            <td style="text-align: center;">85/100</td>
+            <td style="text-align: center;">50/100</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="font-size: 0.75rem; color: #444; margin-top: 15px; text-align: right;">
+        *Données Chrome UX Report (CrUX) 2026
+      </p>
+    </article>
 
   </div>
 </main>

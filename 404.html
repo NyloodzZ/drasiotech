@@ -187,6 +187,10 @@
 <h1>404</h1>
 <p>Page introuvable. Mais ne repartez pas les mains vides.</p>
 
+<button id="reveal-game-btn" class="btn-home" style="display:none; margin-bottom: 20px; background: transparent; border: 1px solid #333; color: #888;">
+  ⚠️ Initialiser le protocole de test (Jeu)
+</button>
+
 <div id="game-container">
   <canvas id="gameCanvas" width="400" height="400"></canvas>
   <div id="overlay">
@@ -208,16 +212,42 @@
 
 <script>
 
-  // --- MODE HYBRIDE : Change le titre si on est sur /snake ---
+  const gameContainer = document.getElementById('game-container');
+  const revealBtn = document.getElementById('reveal-game-btn');
+  const overlay = document.getElementById('overlay'); // Ton overlay "Cliquez pour jouer"
+
+  // --- MODE HYBRIDE INTELLIGENT ---
   if (window.location.pathname === '/snake') {
+    // CAS 1 : C'est la page officielle du jeu (/snake)
     document.title = "Snake Benchmark (Lighthouse 100) | Drasiotech";
-    // Change le H1 si tu as un ID, sinon laisse comme ça, c'est le titre le plus important
     setTimeout(() => {
       const h1 = document.querySelector('h1');
       if(h1) h1.innerText = "SNAKE LABS";
       const p = document.querySelector('p');
       if(p) p.innerText = "Benchmark de réflexes. Architecture Edge.";
+      // On masque le bouton retour accueil qui gêne sur le jeu
+      const homeBtn = document.querySelector('a.btn-home');
+      if(homeBtn) homeBtn.style.display = 'none';
     }, 100);
+
+    // Le jeu est visible direct
+    gameContainer.style.display = 'block';
+
+  } else {
+    // CAS 2 : C'est une vraie erreur 404
+    // On cache le jeu par défaut pour faire "Sérieux"
+    gameContainer.style.display = 'none';
+
+    // On affiche le bouton mystère
+    if(revealBtn) {
+      revealBtn.style.display = 'inline-block';
+      revealBtn.onclick = function() {
+        gameContainer.style.display = 'block';
+        revealBtn.style.display = 'none';
+        // On scroll vers le jeu
+        gameContainer.scrollIntoView({behavior: "smooth"});
+      };
+    }
   }
 
   // --- LE MOTEUR DU JEU (Optimisé & Corrigé) ---
