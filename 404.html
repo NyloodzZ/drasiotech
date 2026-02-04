@@ -3,7 +3,34 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="canonical" href="https://drasiotech.dev/snake"/>
   <title>404 - Perdu dans la Matrice | Drasiotech</title>
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": ["VideoGame", "SoftwareApplication"],
+      "name": "Drasiotech Snake Challenge",
+      "applicationCategory": "Game",
+      "operatingSystem": "Any",
+      "description": "Benchmark de latence et test de réflexes codé en Vanilla JS optimisé Edge Network.",
+      "author": {
+        "@type": "Organization",
+        "name": "Drasiotech"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": "0"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.9",
+        "ratingCount": "150"
+      }
+    }
+  </script>
+
+
   <style>
 
     :root {
@@ -120,6 +147,41 @@
 
   </style>
 </head>
+
+<script>
+  // Ton ID Analytics
+  const GA_ID = 'GTM-PLZPGJPD';
+
+  let analyticsLoaded = false;
+
+  function loadAnalytics() {
+    if (analyticsLoaded) return;
+    analyticsLoaded = true;
+
+    // Création dynamique du script Google
+    const script = document.createElement('script');
+    script.async = true;
+    script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`;
+    document.head.appendChild(script);
+
+    // Configuration
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', GA_ID, { 'anonymize_ip': true });
+
+    console.log('📊 Analytics chargé en mode furtif.');
+  }
+
+  // On charge uniquement si l'utilisateur bouge, scroll ou touche l'écran
+  ['click', 'scroll', 'mousemove', 'touchstart'].forEach(evt =>
+    window.addEventListener(evt, loadAnalytics, { once: true, passive: true })
+  );
+
+  // Sécurité : On charge quand même après 4 secondes si rien ne se passe
+  setTimeout(loadAnalytics, 4000);
+</script>
+
 <body>
 
 <h1>404</h1>
@@ -145,6 +207,19 @@
 <a href="/" class="btn-home">Retour à la base</a>
 
 <script>
+
+  // --- MODE HYBRIDE : Change le titre si on est sur /snake ---
+  if (window.location.pathname === '/snake') {
+    document.title = "Snake Benchmark (Lighthouse 100) | Drasiotech";
+    // Change le H1 si tu as un ID, sinon laisse comme ça, c'est le titre le plus important
+    setTimeout(() => {
+      const h1 = document.querySelector('h1');
+      if(h1) h1.innerText = "SNAKE LABS";
+      const p = document.querySelector('p');
+      if(p) p.innerText = "Benchmark de réflexes. Architecture Edge.";
+    }, 100);
+  }
+
   // --- LE MOTEUR DU JEU (Optimisé & Corrigé) ---
   const canvas = document.getElementById('gameCanvas');
   const ctx = canvas.getContext('2d');

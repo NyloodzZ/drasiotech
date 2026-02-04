@@ -47,6 +47,12 @@
       ]
     }
   ],
+  "rewrites": [
+    {
+      "source": "/snake",
+      "destination": "/404.html"
+    }
+  ],
   "cleanUrls": true,
   "trailingSlash": false
 }
