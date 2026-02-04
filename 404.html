@@ -6,6 +6,8 @@
   <link rel="canonical" href="https://drasiotech.dev/snake"/>
   <title>404 - Perdu dans la Matrice | Drasiotech</title>
 
+  <link rel="icon" href="/favicon.png" type="image/png" sizes="32x32">
+
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -14,25 +16,13 @@
       "applicationCategory": "Game",
       "operatingSystem": "Any",
       "description": "Benchmark de latence et test de réflexes codé en Vanilla JS optimisé Edge Network.",
-      "author": {
-        "@type": "Organization",
-        "name": "Drasiotech"
-      },
-      "offers": {
-        "@type": "Offer",
-        "price": "0"
-      },
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": "4.9",
-        "ratingCount": "150"
-      }
+      "author": { "@type": "Organization", "name": "Drasiotech" },
+      "offers": { "@type": "Offer", "price": "0" },
+      "aggregateRating": { "@type": "AggregateRating", "ratingValue": "4.9", "ratingCount": "150" }
     }
   </script>
 
-
   <style>
-
     :root {
       --bg-deep: #050505;
       --text-main: #ededed;
@@ -41,7 +31,6 @@
       --snake-head: #ffffff;
       --food: #ff0080;
     }
-
     body {
       background-color: var(--bg-deep);
       color: var(--text-main);
@@ -55,23 +44,24 @@
       overflow: hidden;
       text-align: center;
     }
-
     h1 { margin: 0 0 10px 0; font-size: 4rem; letter-spacing: -3px; }
     p { color: #888; margin-bottom: 20px; }
-
     #game-container {
       position: relative;
       border: 1px solid #333;
       box-shadow: 0 0 50px rgba(0, 112, 243, 0.15);
       border-radius: 12px;
       overflow: hidden;
+      /* On cache par défaut en CSS pour éviter le "flash" avant que le JS charge */
+      display: none;
     }
-
     canvas {
       display: block;
       background: rgba(20, 20, 20, 0.5);
+      touch-action: none; /* Vital pour le mobile */
+      max-width: 100%;
+      margin: 0 auto;
     }
-
     .btn-home {
       margin-top: 30px;
       padding: 10px 25px;
@@ -84,15 +74,12 @@
       display: inline-block;
     }
     .btn-home:hover { transform: scale(1.05); }
-
     .score-board {
       font-family: monospace;
       font-size: 1.2rem;
-      margin-bottom: 10px;
+      margin-top: 20px;
       color: var(--accent);
     }
-
-
     #overlay {
       position: absolute;
       top: 0; left: 0; width: 100%; height: 100%;
@@ -104,22 +91,8 @@
       color: white;
       font-weight: bold;
       cursor: pointer;
+      z-index: 10; /* Important pour capter le clic */
     }
-
-    /* Empêche le navigateur de scroller quand on touche le jeu */
-    canvas {
-      touch-action: none;
-      /* Optionnel : pour que ce soit plus gros sur mobile */
-      max-width: 100%;
-      display: block;
-      margin: 0 auto;
-    }
-
-    /* Petit ajustement pour que le texte ne soit pas caché par les pouces */
-    .score-board {
-      margin-top: 20px;
-    }
-
     #challenge-msg {
       color: #888;
       font-family: 'Courier New', monospace;
@@ -127,60 +100,15 @@
       margin-top: 10px;
       text-align: center;
     }
-
-    .blink-text {
-      animation: pulse 2s infinite;
-    }
-
-    @keyframes pulse {
-      0% { opacity: 0.7; }
-      50% { opacity: 1; }
-      100% { opacity: 0.7; }
-    }
-
-    /* La classe pour la surprise (Serpent Doré) */
+    .blink-text { animation: pulse 2s infinite; }
+    @keyframes pulse { 0% { opacity: 0.7; } 50% { opacity: 1; } 100% { opacity: 0.7; } }
     .god-mode-active {
       box-shadow: 0 0 50px #ffd700;
       border: 2px solid #ffd700;
       transition: all 0.5s ease;
     }
-
   </style>
 </head>
-
-<script>
-  // Ton ID Analytics
-  const GA_ID = 'GTM-PLZPGJPD';
-
-  let analyticsLoaded = false;
-
-  function loadAnalytics() {
-    if (analyticsLoaded) return;
-    analyticsLoaded = true;
-
-    // Création dynamique du script Google
-    const script = document.createElement('script');
-    script.async = true;
-    script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`;
-    document.head.appendChild(script);
-
-    // Configuration
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', GA_ID, { 'anonymize_ip': true });
-
-    console.log('📊 Analytics chargé en mode furtif.');
-  }
-
-  // On charge uniquement si l'utilisateur bouge, scroll ou touche l'écran
-  ['click', 'scroll', 'mousemove', 'touchstart'].forEach(evt =>
-    window.addEventListener(evt, loadAnalytics, { once: true, passive: true })
-  );
-
-  // Sécurité : On charge quand même après 4 secondes si rien ne se passe
-  setTimeout(loadAnalytics, 4000);
-</script>
 
 <body>
 
@@ -195,7 +123,7 @@
   <canvas id="gameCanvas" width="400" height="400"></canvas>
   <div id="overlay">
     <span style="font-size: 2rem;">CLIQUEZ POUR JOUER</span>
-    <span style="font-size: 0.9rem; color: #888; margin-top: 10px;">Flèches pour bouger</span>
+    <span style="font-size: 0.9rem; color: #888; margin-top: 10px;">Flèches ou Swipe pour bouger</span>
   </div>
 </div>
 
@@ -211,55 +139,20 @@
 <a href="/" class="btn-home">Retour à la base</a>
 
 <script>
-
+  // --- 1. DÉCLARATION DES VARIABLES GLOBALES (Une seule fois !) ---
   const gameContainer = document.getElementById('game-container');
   const revealBtn = document.getElementById('reveal-game-btn');
-  const overlay = document.getElementById('overlay'); // Ton overlay "Cliquez pour jouer"
-
-  // --- MODE HYBRIDE INTELLIGENT ---
-  if (window.location.pathname === '/snake') {
-    // CAS 1 : C'est la page officielle du jeu (/snake)
-    document.title = "Snake Benchmark (Lighthouse 100) | Drasiotech";
-    setTimeout(() => {
-      const h1 = document.querySelector('h1');
-      if(h1) h1.innerText = "SNAKE LABS";
-      const p = document.querySelector('p');
-      if(p) p.innerText = "Benchmark de réflexes. Architecture Edge.";
-      // On masque le bouton retour accueil qui gêne sur le jeu
-      const homeBtn = document.querySelector('a.btn-home');
-      if(homeBtn) homeBtn.style.display = 'none';
-    }, 100);
-
-    // Le jeu est visible direct
-    gameContainer.style.display = 'block';
-
-  } else {
-    // CAS 2 : C'est une vraie erreur 404
-    // On cache le jeu par défaut pour faire "Sérieux"
-    gameContainer.style.display = 'none';
-
-    // On affiche le bouton mystère
-    if(revealBtn) {
-      revealBtn.style.display = 'inline-block';
-      revealBtn.onclick = function() {
-        gameContainer.style.display = 'block';
-        revealBtn.style.display = 'none';
-        // On scroll vers le jeu
-        gameContainer.scrollIntoView({behavior: "smooth"});
-      };
-    }
-  }
-
-  // --- LE MOTEUR DU JEU (Optimisé & Corrigé) ---
+  const overlay = document.getElementById('overlay');
   const canvas = document.getElementById('gameCanvas');
   const ctx = canvas.getContext('2d');
-  const overlay = document.getElementById('overlay');
   const scoreEl = document.getElementById('score');
-  const highScoreEl = document.getElementById('highScore'); // Déplacé ici pour être propre
+  const highScoreEl = document.getElementById('highScore');
+  const challengeMsg = document.getElementById('challenge-msg');
+  const homeBtn = document.querySelector('a.btn-home');
 
+  // Variables du jeu
   const gridSize = 20;
   const tileCount = canvas.width / gridSize;
-
   let score = 0;
   let velocity = { x: 0, y: 0 };
   let trail = [];
@@ -270,101 +163,113 @@
   let gameInterval;
   let godMode = false;
 
-  // Récupération du High Score au chargement
+  // Récupération High Score
   let highScore = localStorage.getItem('snakeHighScore') || 0;
   if(highScoreEl) highScoreEl.innerText = highScore;
 
-  // Écouteurs d'événements
+  // --- 2. LOGIQUE HYBRIDE (404 vs SNAKE) ---
+  // On utilise .includes() pour gérer les cas avec ou sans slash final
+  const isSnakePage = window.location.pathname.includes('/snake');
+
+  if (isSnakePage) {
+    // CAS 1 : C'est la page du jeu (/snake)
+    document.title = "Snake Benchmark (Lighthouse 100) | Drasiotech";
+    gameContainer.style.display = 'block'; // On affiche le jeu
+
+    // Modification des textes après un court délai pour être sûr
+    setTimeout(() => {
+      const h1 = document.querySelector('h1');
+      if(h1) h1.innerText = "SNAKE LABS";
+      const p = document.querySelector('p');
+      if(p) p.innerText = "Benchmark de réflexes. Architecture Edge.";
+      if(homeBtn) homeBtn.style.display = 'none'; // Cache le bouton retour
+    }, 50);
+
+  } else {
+    // CAS 2 : C'est une vraie 404
+    // Le jeu reste caché (display: none dans le CSS)
+
+    // On active le bouton mystère
+    if(revealBtn) {
+      revealBtn.style.display = 'inline-block';
+      revealBtn.onclick = function() {
+        gameContainer.style.display = 'block';
+        revealBtn.style.display = 'none';
+        gameContainer.scrollIntoView({behavior: "smooth"});
+      };
+    }
+  }
+
+  // --- 3. MOTEUR DU JEU ---
+
+  // Écouteurs
   document.addEventListener('keydown', keyPush);
-  overlay.addEventListener('click', startGame);
+  if(overlay) overlay.addEventListener('click', startGame);
 
   function startGame() {
     if(isRunning) return;
-
-    // Reset complet des variables
     isRunning = true;
     score = 0;
     tail = 5;
     scoreEl.innerText = score;
     player = { x: 10, y: 10 };
-    velocity = { x: 1, y: 0 }; // Commence à bouger direct vers la droite
-    trail = []; // On vide le serpent
+    velocity = { x: 1, y: 0 };
+    trail = [];
 
-    // Reset du God Mode
+    // Reset God Mode
     godMode = false;
-    const msg = document.getElementById('challenge-msg');
-    if(msg) {
-      msg.innerHTML = '⚠️ MISSION : Atteins <span style="color: #ffd700;">300 pts</span> pour débloquer le mode GOD.';
-      msg.style.color = "#888";
-      msg.style.fontWeight = "normal";
+    if(challengeMsg) {
+      challengeMsg.innerHTML = '⚠️ MISSION : Atteins <span style="color: #ffd700;">300 pts</span> pour débloquer le mode GOD.';
+      challengeMsg.style.color = "#888";
+      challengeMsg.style.fontWeight = "normal";
     }
-    if(canvas) canvas.classList.remove("god-mode-active");
+    canvas.classList.remove("god-mode-active");
 
     overlay.style.display = 'none';
 
-    // Lance la boucle
     if(gameInterval) clearInterval(gameInterval);
     gameInterval = setInterval(game, 1000 / 15);
   }
 
   function game() {
-    // 1. Déplacement
     player.x += velocity.x;
     player.y += velocity.y;
 
-    // 2. Murs (Téléportation)
     if (player.x < 0) player.x = tileCount - 1;
     if (player.x > tileCount - 1) player.x = 0;
     if (player.y < 0) player.y = tileCount - 1;
     if (player.y > tileCount - 1) player.y = 0;
 
-    // 3. Dessin du fond (Une seule fois !)
     ctx.fillStyle = '#111';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // 4. Dessin du Serpent & Collision Queue
     for (let i = 0; i < trail.length; i++) {
-      // Couleur God Mode vs Normal
       if (godMode) {
         ctx.fillStyle = `hsl(${Date.now() % 360}, 100%, 50%)`;
       } else {
         ctx.fillStyle = (i === trail.length - 1) ? '#ffffff' : '#0070f3';
       }
-
       ctx.fillRect(trail[i].x * gridSize, trail[i].y * gridSize, gridSize - 2, gridSize - 2);
 
-      // Si on se mord la queue
       if (trail[i].x === player.x && trail[i].y === player.y) {
-        // On réduit la taille (mode "perte de vie") ou Game Over direct
-        // Ici on fait Game Over classique :
-        // Mais attention : au démarrage trail est vide, donc pas de bug.
-        // On ajoute une sécurité : seulement si le jeu a commencé vraiment
         if(tail > 5) gameOver();
-        else if(trail.length > 2) gameOver(); // Sécurité anti-bug spawn
+        else if(trail.length > 2) gameOver();
       }
     }
 
-    // 5. Mise à jour de la queue
     trail.push({ x: player.x, y: player.y });
     while (trail.length > tail) {
       trail.shift();
     }
 
-    // 6. Manger la pomme
     if (food.x === player.x && food.y === player.y) {
       tail++;
       score += 10;
       scoreEl.innerText = score;
-
-      // Check God Mode
-      if (score >= 300 && !godMode) {
-        activateGodMode();
-      }
-
+      if (score >= 300 && !godMode) activateGodMode();
       placeFoodSafe();
     }
 
-    // 7. Dessin de la pomme (Après le serpent pour pas être caché)
     ctx.fillStyle = '#ff0080';
     ctx.fillRect(food.x * gridSize, food.y * gridSize, gridSize - 2, gridSize - 2);
   }
@@ -375,14 +280,12 @@
       food.x = Math.floor(Math.random() * tileCount);
       food.y = Math.floor(Math.random() * tileCount);
       valid = true;
-      // Vérifie collision avec serpent
       for (let segment of trail) {
         if (segment.x === food.x && segment.y === food.y) {
           valid = false;
           break;
         }
       }
-      // Vérifie collision avec tête aussi
       if (player.x === food.x && player.y === food.y) valid = false;
     }
   }
@@ -390,27 +293,23 @@
   function gameOver() {
     clearInterval(gameInterval);
     isRunning = false;
-
-    // Sauvegarde High Score
     if (score > highScore) {
       highScore = score;
       localStorage.setItem('snakeHighScore', highScore);
       if(highScoreEl) highScoreEl.innerText = highScore;
     }
-
     overlay.style.display = 'flex';
     overlay.innerHTML = `<span style="font-size:2rem;color:#ff0080">GAME OVER</span><br>Score: ${score}<br><span style="font-size:0.9rem;margin-top:10px">Cliquez pour rejouer</span>`;
   }
 
   function activateGodMode() {
     godMode = true;
-    const msg = document.getElementById('challenge-msg');
-    if(msg) {
-      msg.innerHTML = "🏆 MODE GOD ACTIVÉ ! TU ES LE ROI DU SEO ! 🏆";
-      msg.style.color = "#ffd700";
-      msg.style.fontWeight = "bold";
+    if(challengeMsg) {
+      challengeMsg.innerHTML = "🏆 MODE GOD ACTIVÉ ! TU ES LE ROI DU SEO ! 🏆";
+      challengeMsg.style.color = "#ffd700";
+      challengeMsg.style.fontWeight = "bold";
     }
-    if(canvas) canvas.classList.add("god-mode-active");
+    canvas.classList.add("god-mode-active");
   }
 
   function keyPush(evt) {
@@ -423,21 +322,17 @@
     }
   }
 
-  // --- SWIPE (MOBILE) ---
+  // --- SWIPE MOBILE ---
   let touchStartX = 0;
   let touchStartY = 0;
-
   document.addEventListener('touchstart', function(evt) {
     touchStartX = evt.touches[0].clientX;
     touchStartY = evt.touches[0].clientY;
   }, false);
-
   document.addEventListener('touchend', function(evt) {
-    if (!evt.changedTouches.length || !isRunning) return; // Sécurité isRunning
-
+    if (!evt.changedTouches.length || !isRunning) return;
     let diffX = evt.changedTouches[0].clientX - touchStartX;
     let diffY = evt.changedTouches[0].clientY - touchStartY;
-
     if (Math.abs(diffX) > Math.abs(diffY)) {
       if (diffX > 0 && velocity.x !== -1) { velocity.x = 1; velocity.y = 0; }
       else if (diffX < 0 && velocity.x !== 1) { velocity.x = -1; velocity.y = 0; }
@@ -447,5 +342,28 @@
     }
   }, false);
 </script>
+
+<script>
+  const GA_ID = 'GTM-PLZPGJPD'; // Ton ID (Vérifie bien que c'est un G-XXXXX si possible)
+  let analyticsLoaded = false;
+  function loadAnalytics() {
+    if (analyticsLoaded) return;
+    analyticsLoaded = true;
+    const script = document.createElement('script');
+    script.async = true;
+    script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`;
+    document.head.appendChild(script);
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', GA_ID, { 'anonymize_ip': true });
+    console.log('📊 Analytics chargé.');
+  }
+  ['click', 'scroll', 'mousemove', 'touchstart'].forEach(evt =>
+    window.addEventListener(evt, loadAnalytics, { once: true, passive: true })
+  );
+  setTimeout(loadAnalytics, 4000);
+</script>
+
 </body>
 </html>
