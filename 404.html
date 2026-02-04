@@ -78,6 +78,46 @@
       font-weight: bold;
       cursor: pointer;
     }
+
+    /* Empêche le navigateur de scroller quand on touche le jeu */
+    canvas {
+      touch-action: none;
+      /* Optionnel : pour que ce soit plus gros sur mobile */
+      max-width: 100%;
+      display: block;
+      margin: 0 auto;
+    }
+
+    /* Petit ajustement pour que le texte ne soit pas caché par les pouces */
+    .score-board {
+      margin-top: 20px;
+    }
+
+    #challenge-msg {
+      color: #888;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9rem;
+      margin-top: 10px;
+      text-align: center;
+    }
+
+    .blink-text {
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 0.7; }
+      50% { opacity: 1; }
+      100% { opacity: 0.7; }
+    }
+
+    /* La classe pour la surprise (Serpent Doré) */
+    .god-mode-active {
+      box-shadow: 0 0 50px #ffd700;
+      border: 2px solid #ffd700;
+      transition: all 0.5s ease;
+    }
+
   </style>
 </head>
 <body>
@@ -85,14 +125,21 @@
 <h1>404</h1>
 <p>Page introuvable. Mais ne repartez pas les mains vides.</p>
 
-<div class="score-board">Score : <span id="score">0</span></div>
-
 <div id="game-container">
   <canvas id="gameCanvas" width="400" height="400"></canvas>
   <div id="overlay">
     <span style="font-size: 2rem;">CLIQUEZ POUR JOUER</span>
     <span style="font-size: 0.9rem; color: #888; margin-top: 10px;">Flèches pour bouger</span>
   </div>
+</div>
+
+<p id="challenge-msg" class="blink-text">
+  ⚠️ MISSION : Atteins <span style="color: #ffd700;">300 pts</span> pour débloquer le mode GOD.
+</p>
+
+<div class="score-board">
+  <div>SCORE : <span id="score">0</span></div>
+  <div style="font-size: 0.8em; color: #4ade80; margin-top:5px;">RECORD : <span id="highScore">0</span></div>
 </div>
 
 <a href="/" class="btn-home">Retour à la base</a>
@@ -115,6 +162,12 @@
   let food = { x: 15, y: 15 };
   let isRunning = false;
   let gameInterval;
+  let godMode = false;
+
+  let highScore = localStorage.getItem('snakeHighScore') || 0;
+  const highScoreEl = document.getElementById('highScore');
+  // Affiche le record au chargement
+  if(highScoreEl) highScoreEl.innerText = highScore;
 
 
   document.addEventListener('keydown', keyPush);
@@ -150,9 +203,19 @@
 
     for (let i = 0; i < trail.length; i++) {
 
-      ctx.fillStyle = (i === trail.length - 1) ? '#ffffff' : '#0070f3';
-      ctx.fillRect(trail[i].x * gridSize, trail[i].y * gridSize, gridSize - 2, gridSize - 2);
+      // Dans la boucle for (let i = 0; i < trail.length; i++) {
 
+      if (godMode) {
+        // 🌈 Mode Surprise : Arc-en-ciel animé
+        ctx.fillStyle = `hsl(${Date.now() % 360}, 100%, 50%)`;
+      } else {
+        // 🔵 Mode Normal (Ta logique actuelle préservée)
+        // Tête blanche (#ffffff), Corps bleu (#0070f3)
+        ctx.fillStyle = (i === trail.length - 1) ? '#ffffff' : '#0070f3';
+      }
+
+      // Ensuite tu gardes ta ligne ctx.fillRect(...) qui est juste en dessous
+      ctx.fillRect(trail[i].x * gridSize, trail[i].y * gridSize, gridSize - 2, gridSize - 2);
 
       if (trail[i].x === player.x && trail[i].y === player.y) {
         gameOver();
@@ -169,11 +232,20 @@
     ctx.fillRect(food.x * gridSize, food.y * gridSize, gridSize - 2, gridSize - 2);
 
 
+    // --- DANS LA BOUCLE DU JEU (au moment où il mange la pomme) ---
     if (food.x === player.x && food.y === player.y) {
       tail++;
       score += 10;
-      scoreEl.innerText = score;
+      scoreEl.innerText = 'SCORE: ' + score; // (ou ta variable d'affichage)
 
+      // 🔥 LE BLOC SURPRISE (Nouveau) 🔥
+      // Si le score dépasse 300 et que le mode n'est pas encore actif
+      if (score >= 300 && !godMode) {
+        activateGodMode();
+      }
+      // --------------------------------
+
+      // On replace la pomme aléatoirement
       food.x = Math.floor(Math.random() * tileCount);
       food.y = Math.floor(Math.random() * tileCount);
     }
@@ -197,10 +269,76 @@
     }
   }
 
+  // --- GESTION DU TACTILE (SWIPE) ---
+
+  let touchStartX = 0;
+  let touchStartY = 0;
+
+  document.addEventListener('touchstart', function(evt) {
+    // On mémorise le point de départ du doigt
+    touchStartX = evt.touches[0].clientX;
+    touchStartY = evt.touches[0].clientY;
+  }, false);
+
+  document.addEventListener('touchend', function(evt) {
+    if (!evt.changedTouches.length) return;
+
+    let touchEndX = evt.changedTouches[0].clientX;
+    let touchEndY = evt.changedTouches[0].clientY;
+
+    let diffX = touchEndX - touchStartX;
+    let diffY = touchEndY - touchStartY;
+
+    // On regarde si le mouvement est plus horizontal ou vertical
+    if (Math.abs(diffX) > Math.abs(diffY)) {
+      // Mouvement Horizontal
+      if (diffX > 0 && velocity.x !== -1) { // Swipe Droite
+        velocity.x = 1; velocity.y = 0;
+      } else if (diffX < 0 && velocity.x !== 1) { // Swipe Gauche
+        velocity.x = -1; velocity.y = 0;
+      }
+    } else {
+      // Mouvement Vertical
+      if (diffY > 0 && velocity.y !== -1) { // Swipe Bas
+        velocity.x = 0; velocity.y = 1;
+      } else if (diffY < 0 && velocity.y !== 1) { // Swipe Haut
+        velocity.x = 0; velocity.y = -1;
+      }
+    }
+  }, false);
+
+  function activateGodMode() {
+    godMode = true;
+    const msg = document.getElementById('challenge-msg');
+
+    // Change le message
+    if(msg) {
+      msg.innerHTML = "🏆 MODE GOD ACTIVÉ ! TU ES LE ROI DU SEO ! 🏆";
+      msg.style.color = "#ffd700";
+      msg.style.fontWeight = "bold";
+    }
+
+    // Fait briller le canvas
+    let canvas = document.querySelector("canvas");
+    if(canvas) canvas.classList.add("god-mode-active");
+
+    // Petit flash d'écran
+    document.body.style.backgroundColor = "white";
+    setTimeout(() => {
+      document.body.style.backgroundColor = "var(--bg-deep)"; // Remets ta couleur de fond ici si besoin
+    }, 100);
+  }
+
   function gameOver() {
     clearInterval(gameInterval);
     isRunning = false;
     overlay.style.display = 'flex';
+    // Sauvegarde du record si battu
+    if (score > highScore) {
+      highScore = score;
+      localStorage.setItem('snakeHighScore', highScore);
+      if(highScoreEl) highScoreEl.innerText = highScore;
+    }
     overlay.innerHTML = `<span style="font-size:2rem;color:#ff0080">GAME OVER</span><br>Score: ${score}<br><span style="font-size:0.9rem;margin-top:10px">Cliquez pour rejouer</span>`;
   }
 </script>
