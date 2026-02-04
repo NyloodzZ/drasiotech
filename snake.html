@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Snake Benchmark (Lighthouse 100) | Drasiotech</title>
+  <meta name="description" content="Testez la latence de notre architecture Edge avec ce Snake optimisé.">
+  <link rel="canonical" href="https://drasiotech.dev/snake"/>
+
+  <link rel="icon" href="/favicon.png" type="image/png" sizes="32x32">
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": ["VideoGame", "SoftwareApplication"],
+      "name": "Drasiotech Snake Challenge",
+      "applicationCategory": "Game",
+      "operatingSystem": "Any",
+      "author": { "@type": "Organization", "name": "Drasiotech" },
+      "offers": { "@type": "Offer", "price": "0" },
+      "aggregateRating": { "@type": "AggregateRating", "ratingValue": "4.9", "ratingCount": "150" }
+    }
+  </script>
+
+  <style>
+    :root {
+      --bg-deep: #050505;
+      --text-main: #ededed;
+      --accent: #0070f3;
+    }
+    body {
+      background-color: var(--bg-deep);
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      overflow: hidden;
+      text-align: center;
+    }
+    h1 { margin: 0 0 10px 0; font-size: 3rem; letter-spacing: -2px; }
+    p { color: #888; margin-bottom: 20px; }
+
+    #game-container {
+      position: relative;
+      border: 1px solid #333;
+      box-shadow: 0 0 50px rgba(0, 112, 243, 0.15);
+      border-radius: 12px;
+      overflow: hidden;
+      display: block; /* Toujours visible ici */
+    }
+    canvas {
+      display: block;
+      background: rgba(20, 20, 20, 0.5);
+      touch-action: none;
+      max-width: 100%;
+    }
+    .btn-home {
+      margin-top: 30px;
+      padding: 10px 25px;
+      background: var(--text-main);
+      color: black;
+      text-decoration: none;
+      font-weight: bold;
+      border-radius: 50px;
+      transition: transform 0.2s;
+    }
+    .btn-home:hover { transform: scale(1.05); }
+    .score-board {
+      font-family: monospace;
+      font-size: 1.2rem;
+      margin-top: 20px;
+      color: var(--accent);
+    }
+    #overlay {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.8);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      z-index: 10;
+    }
+    #challenge-msg {
+      color: #888;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9rem;
+      margin-top: 10px;
+    }
+    .god-mode-active {
+      box-shadow: 0 0 50px #ffd700 !important;
+      border: 2px solid #ffd700 !important;
+    }
+  </style>
+</head>
+<body>
+
+<h1>SNAKE LABS</h1>
+<p>Benchmark de réflexes. Architecture Edge.</p>
+
+<div id="game-container">
+  <canvas id="gameCanvas" width="400" height="400"></canvas>
+  <div id="overlay">
+    <span style="font-size: 2rem;">CLIQUEZ POUR JOUER</span>
+    <span style="font-size: 0.9rem; color: #888; margin-top: 10px;">Flèches ou Swipe</span>
+  </div>
+</div>
+
+<p id="challenge-msg">⚠️ MISSION : Atteins <span style="color: #ffd700;">300 pts</span> pour le mode GOD.</p>
+
+<div class="score-board">
+  <div>SCORE : <span id="score">0</span></div>
+  <div style="font-size: 0.8em; color: #4ade80; margin-top:5px;">RECORD : <span id="highScore">0</span></div>
+</div>
+
+<a href="/" class="btn-home">Retour à l'accueil</a>
+
+<script>
+  const canvas = document.getElementById('gameCanvas');
+  const ctx = canvas.getContext('2d');
+  const overlay = document.getElementById('overlay');
+  const scoreEl = document.getElementById('score');
+  const highScoreEl = document.getElementById('highScore');
+  const challengeMsg = document.getElementById('challenge-msg');
+
+  const gridSize = 20;
+  const tileCount = canvas.width / gridSize;
+  let score = 0;
+  let velocity = { x: 0, y: 0 };
+  let trail = [];
+  let tail = 5;
+  let player = { x: 10, y: 10 };
+  let food = { x: 15, y: 15 };
+  let isRunning = false;
+  let gameInterval;
+  let godMode = false;
+
+  let highScore = localStorage.getItem('snakeHighScore') || 0;
+  if(highScoreEl) highScoreEl.innerText = highScore;
+
+  document.addEventListener('keydown', keyPush);
+  overlay.addEventListener('click', startGame);
+
+  function startGame() {
+    if(isRunning) return;
+    isRunning = true;
+    score = 0;
+    tail = 5;
+    scoreEl.innerText = score;
+    player = { x: 10, y: 10 };
+    velocity = { x: 1, y: 0 };
+    trail = [];
+    godMode = false;
+    if(challengeMsg) {
+      challengeMsg.innerHTML = '⚠️ MISSION : Atteins <span style="color: #ffd700;">300 pts</span> pour le mode GOD.';
+      challengeMsg.style.color = "#888";
+      challengeMsg.style.fontWeight = "normal";
+    }
+    canvas.classList.remove("god-mode-active");
+    overlay.style.display = 'none';
+    if(gameInterval) clearInterval(gameInterval);
+    gameInterval = setInterval(game, 1000 / 15);
+  }
+
+  function game() {
+    player.x += velocity.x;
+    player.y += velocity.y;
+    if (player.x < 0) player.x = tileCount - 1;
+    if (player.x > tileCount - 1) player.x = 0;
+    if (player.y < 0) player.y = tileCount - 1;
+    if (player.y > tileCount - 1) player.y = 0;
+
+    ctx.fillStyle = '#111';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    for (let i = 0; i < trail.length; i++) {
+      if (godMode) ctx.fillStyle = `hsl(${Date.now() % 360}, 100%, 50%)`;
+      else ctx.fillStyle = (i === trail.length - 1) ? '#ffffff' : '#0070f3';
+      ctx.fillRect(trail[i].x * gridSize, trail[i].y * gridSize, gridSize - 2, gridSize - 2);
+      if (trail[i].x === player.x && trail[i].y === player.y) {
+        if(tail > 5) gameOver();
+        else if(trail.length > 2) gameOver();
+      }
+    }
+    trail.push({ x: player.x, y: player.y });
+    while (trail.length > tail) trail.shift();
+
+    if (food.x === player.x && food.y === player.y) {
+      tail++;
+      score += 10;
+      scoreEl.innerText = score;
+      if (score >= 300 && !godMode) activateGodMode();
+      placeFoodSafe();
+    }
+    ctx.fillStyle = '#ff0080';
+    ctx.fillRect(food.x * gridSize, food.y * gridSize, gridSize - 2, gridSize - 2);
+  }
+
+  function placeFoodSafe() {
+    let valid = false;
+    while (!valid) {
+      food.x = Math.floor(Math.random() * tileCount);
+      food.y = Math.floor(Math.random() * tileCount);
+      valid = true;
+      for (let segment of trail) {
+        if (segment.x === food.x && segment.y === food.y) { valid = false; break; }
+      }
+      if (player.x === food.x && player.y === food.y) valid = false;
+    }
+  }
+
+  function gameOver() {
+    clearInterval(gameInterval);
+    isRunning = false;
+    if (score > highScore) {
+      highScore = score;
+      localStorage.setItem('snakeHighScore', highScore);
+      if(highScoreEl) highScoreEl.innerText = highScore;
+    }
+    overlay.style.display = 'flex';
+    overlay.innerHTML = `<span style="font-size:2rem;color:#ff0080">GAME OVER</span><br>Score: ${score}<br><span style="font-size:0.9rem;margin-top:10px">Cliquez pour rejouer</span>`;
+  }
+
+  function activateGodMode() {
+    godMode = true;
+    if(challengeMsg) {
+      challengeMsg.innerHTML = "🏆 MODE GOD ACTIVÉ ! 🏆";
+      challengeMsg.style.color = "#ffd700";
+      challengeMsg.style.fontWeight = "bold";
+    }
+    canvas.classList.add("god-mode-active");
+  }
+
+  function keyPush(evt) {
+    if(!isRunning) return;
+    switch (evt.keyCode) {
+      case 37: if (velocity.x !== 1) { velocity.x = -1; velocity.y = 0; } break;
+      case 38: if (velocity.y !== 1) { velocity.x = 0; velocity.y = -1; } break;
+      case 39: if (velocity.x !== -1) { velocity.x = 1; velocity.y = 0; } break;
+      case 40: if (velocity.y !== -1) { velocity.x = 0; velocity.y = 1; } break;
+    }
+  }
+
+  // Swipe Mobile
+  let touchStartX = 0; let touchStartY = 0;
+  document.addEventListener('touchstart', function(evt) {
+    touchStartX = evt.touches[0].clientX; touchStartY = evt.touches[0].clientY;
+  }, false);
+  document.addEventListener('touchend', function(evt) {
+    if (!evt.changedTouches.length || !isRunning) return;
+    let diffX = evt.changedTouches[0].clientX - touchStartX;
+    let diffY = evt.changedTouches[0].clientY - touchStartY;
+    if (Math.abs(diffX) > Math.abs(diffY)) {
+      if (diffX > 0 && velocity.x !== -1) { velocity.x = 1; velocity.y = 0; }
+      else if (diffX < 0 && velocity.x !== 1) { velocity.x = -1; velocity.y = 0; }
+    } else {
+      if (diffY > 0 && velocity.y !== -1) { velocity.x = 0; velocity.y = 1; }
+      else if (diffY < 0 && velocity.y !== 1) { velocity.x = 0; velocity.y = -1; }
+    }
+  }, false);
+</script>
+
+<script>
+  const GA_ID = 'GTM-PLZPGJPD';
+  let analyticsLoaded = false;
+  function loadAnalytics() {
+    if (analyticsLoaded) return;
+    analyticsLoaded = true;
+    const script = document.createElement('script');
+    script.async = true;
+    script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`;
+    document.head.appendChild(script);
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', GA_ID, { 'anonymize_ip': true });
+  }
+  ['click', 'scroll', 'mousemove', 'touchstart'].forEach(evt =>
+    window.addEventListener(evt, loadAnalytics, { once: true, passive: true })
+  );
+  setTimeout(loadAnalytics, 4000);
+</script>
+</body>
+</html>
