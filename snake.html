@@ -41,6 +41,15 @@
       overflow: hidden;
       text-align: center;
     }
+
+    /* CORRECTION 2 : Main Landmark pour l'accessibilité */
+    main {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+    }
+
     h1 { margin: 0 0 10px 0; font-size: 3rem; letter-spacing: -2px; }
     p { color: #888; margin-bottom: 20px; }
 
@@ -50,7 +59,7 @@
       box-shadow: 0 0 50px rgba(0, 112, 243, 0.15);
       border-radius: 12px;
       overflow: hidden;
-      display: block; /* Toujours visible ici */
+      display: block;
     }
     canvas {
       display: block;
@@ -69,12 +78,15 @@
       transition: transform 0.2s;
     }
     .btn-home:hover { transform: scale(1.05); }
+
+    /* CORRECTION 1 : Contraste (Blanc au lieu de Bleu pour le texte) */
     .score-board {
       font-family: monospace;
       font-size: 1.2rem;
       margin-top: 20px;
-      color: var(--accent);
+      color: #ffffff; /* Était var(--accent), passé en blanc pour ratio 21:1 */
     }
+
     #overlay {
       position: absolute;
       top: 0; left: 0; width: 100%; height: 100%;
@@ -102,25 +114,27 @@
 </head>
 <body>
 
-<h1>SNAKE LABS</h1>
-<p>Benchmark de réflexes. Architecture Edge.</p>
+<main>
+  <h1>SNAKE LABS</h1>
+  <p>Benchmark de réflexes. Architecture Edge.</p>
 
-<div id="game-container">
-  <canvas id="gameCanvas" width="400" height="400"></canvas>
-  <div id="overlay">
-    <span style="font-size: 2rem;">CLIQUEZ POUR JOUER</span>
-    <span style="font-size: 0.9rem; color: #888; margin-top: 10px;">Flèches ou Swipe</span>
+  <div id="game-container">
+    <canvas id="gameCanvas" width="400" height="400"></canvas>
+    <div id="overlay">
+      <span style="font-size: 2rem;">CLIQUEZ POUR JOUER</span>
+      <span style="font-size: 0.9rem; color: #888; margin-top: 10px;">Flèches ou Swipe</span>
+    </div>
   </div>
-</div>
 
-<p id="challenge-msg">⚠️ MISSION : Atteins <span style="color: #ffd700;">300 pts</span> pour le mode GOD.</p>
+  <p id="challenge-msg">⚠️ MISSION : Atteins <span style="color: #ffd700;">300 pts</span> pour le mode GOD.</p>
 
-<div class="score-board">
-  <div>SCORE : <span id="score">0</span></div>
-  <div style="font-size: 0.8em; color: #4ade80; margin-top:5px;">RECORD : <span id="highScore">0</span></div>
-</div>
+  <div class="score-board">
+    <div>SCORE : <span id="score">0</span></div>
+    <div style="font-size: 0.8em; color: #4ade80; margin-top:5px;">RECORD : <span id="highScore">0</span></div>
+  </div>
 
-<a href="/" class="btn-home">Retour à l'accueil</a>
+  <a href="/" class="btn-home">Retour à l'accueil</a>
+</main>
 
 <script>
   const canvas = document.getElementById('gameCanvas');
@@ -248,7 +262,6 @@
     }
   }
 
-  // Swipe Mobile
   let touchStartX = 0; let touchStartY = 0;
   document.addEventListener('touchstart', function(evt) {
     touchStartX = evt.touches[0].clientX; touchStartY = evt.touches[0].clientY;
