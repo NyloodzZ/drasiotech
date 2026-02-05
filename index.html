@@ -59,6 +59,32 @@
             "@id": "https://drasiotech.dev/#organization"
           },
           "inLanguage": "fr-FR"
+        },
+        {
+          "@type": "FAQPage",
+          "@id": "https://drasiotech.dev/#faq",
+          "mainEntity": [{
+            "@type": "Question",
+            "name": "C'est quoi le projet Drasiotech ?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Drasiotech est un démonstrateur technique étudiant visant à prouver la supériorité de l'architecture Edge (No-Framework) sur les solutions CMS classiques. Le site atteint un score de performance de 100/100 sur Google Lighthouse."
+            }
+          }, {
+            "@type": "Question",
+            "name": "Pourquoi Drasiotech est-il plus rapide qu'un site WordPress ?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Drasiotech utilise du code natif (HTML5/Vanilla JS) sans surcouche logicielle. Hébergé sur le réseau Vercel Edge, le contenu est livré en moins de 0.15 seconde, contre 2 à 3 secondes pour un site WordPress standard."
+            }
+          }, {
+            "@type": "Question",
+            "name": "Comment tester le Snake Benchmark ?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Le Snake Benchmark est accessible directement via l'URL /snake ou via le terminal caché en bas de page d'accueil. Il permet de tester la latence d'affichage et la réactivité des scripts JS."
+            }
+          }]
         }
       ]
     }
@@ -436,71 +462,6 @@
       border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     }
 
-    /* --- FOOTER SINGLE LINE (Clean & Pro) --- */
-    .dev-footer {
-      width: 100%;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-      background: #000;
-      padding: 15px 0;
-      margin-top: 4rem;
-    }
-
-    .footer-content {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: nowrap;
-    }
-
-    .footer-left {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-family: 'SF Mono', 'Fira Code', monospace;
-      font-size: 0.8rem;
-      /* CORRECTION ACCESSIBILITÉ : On éclaircit le gris pour le contraste AAA */
-      color: #a1a1a1;
-    }
-
-    .status-dot {
-      width: 6px;
-      height: 6px;
-      background-color: #00ff00;
-      border-radius: 50%;
-      box-shadow: 0 0 5px #00ff00;
-    }
-
-    .footer-links {
-      display: flex;
-      gap: 20px;
-    }
-
-    .social-link {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      text-decoration: none;
-      /* CORRECTION ACCESSIBILITÉ : Même chose ici */
-      color: #a1a1a1;
-      font-size: 0.8rem;
-      font-family: system-ui, sans-serif;
-      font-weight: 500;
-      transition: color 0.2s ease;
-    }
-
-    .social-link:hover {
-      color: #fff;
-    }
-
-    @media (max-width: 600px) {
-      .footer-content {
-        flex-direction: column;
-        gap: 10px;
-      }
-    }
 
     .video-container {
       position: relative;
@@ -597,73 +558,206 @@
       line-height: 1.5;
     }
 
-    .separator {
-      color: #333;
-      margin: 0 10px;
+    .dev-footer {
+      margin-top: 8rem; /* Espace aéré au-dessus */
+      border-top: 1px solid rgba(255, 255, 255, 0.1); /* Bordure subtile */
+      background: rgba(5, 5, 5, 0.8); /* Fond quasi noir mais transparent */
+      backdrop-filter: blur(12px); /* Effet de flou "Verre" */
+      padding: 1.5rem 0;
+      font-family: 'SF Mono', 'Fira Code', Consolas, monospace; /* Police Code */
+      font-size: 0.8rem;
+      width: 100%;
+      position: relative;
+      z-index: 10;
     }
 
-    .secret-terminal {
-      text-decoration: none;
-      margin-left: 15px;
-      font-family: 'Courier New', Courier, monospace;
-      font-weight: bold;
-      font-size: 1.1rem;
-      color: #333;
-      transition: all 0.3s ease;
-      padding: 2px 5px;
-      border-radius: 4px;
+    .footer-content {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
     }
 
-    .secret-terminal:hover {
-      background-color: rgba(255, 0, 0, 0.1);
-      color: #ff3333;
-      box-shadow: 0 0 10px rgba(255, 0, 0, 0.4);
+    /* --- PARTIE GAUCHE (Status & Localisation) --- */
+    .footer-left {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      color: #666; /* Gris discret */
     }
 
-    .blink-cursor {
-      animation: blink 1s step-end infinite;
-    }
-
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0; }
-    }
-
-    @media (max-width: 768px) {
-      .ambient-glow {
-        animation: none;
-        filter: blur(40px);
-        opacity: 0.4;
-      }
-
-      .background-grid {
-        mask-image: none;
-        -webkit-mask-image: none;
-      }
-    }
-
-    /* Ajoute ça à ton CSS existant */
-
-    .geo-data {
-      font-family: 'SF Mono', 'Fira Code', monospace;
-      font-size: 0.75rem; /* Plus petit que le reste */
-      color: #444; /* Gris très sombre pour être discret mais lisible par Google */
-      transition: color 0.3s ease;
-      text-decoration: none;
+    /* Le point vert qui pulse */
+    .system-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #ededed;
+      font-weight: 500;
+      background: rgba(255,255,255,0.05);
+      padding: 4px 10px;
+      border-radius: 50px;
       border: 1px solid rgba(255,255,255,0.05);
-      padding: 2px 8px;
-      border-radius: 4px;
-      background: rgba(0,0,0,0.3);
+    }
+
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      background-color: #0CCE6B;
+      border-radius: 50%;
+      box-shadow: 0 0 8px rgba(12, 206, 107, 0.4);
+      animation: pulse 3s infinite ease-in-out;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    /* Le Badge SEO "Orléans" (Style Bento) */
+    .geo-data {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 6px;
+      border: 1px solid rgba(255,255,255,0.1); /* Bordure Bento */
+      color: #888;
+      transition: all 0.3s ease;
+      cursor: help;
     }
 
     .geo-data:hover {
-      color: #666;
-      border-color: rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.05);
+      border-color: #0070f3; /* Devient bleu au survol */
+      color: #ededed;
     }
 
-    /* Ajustement Mobile : On cache les détails non critiques si besoin */
-    @media (max-width: 600px) {
-      .geo-data { display: none; } /* Google l'a déjà indexé sur Desktop, c'est ok */
+    .geo-label { font-size: 0.7rem; opacity: 0.7; }
+    .geo-value { color: #0070f3; font-weight: 700; } /* Bleu Drasiotech */
+
+
+    /* --- PARTIE DROITE (Liens) --- */
+    .footer-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .social-link {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      color: #666;
+      transition: color 0.2s ease;
+    }
+
+    .social-link:hover { color: #ededed; }
+
+    /* Le Terminal Snake */
+    .secret-terminal {
+      text-decoration: none;
+      background: #000;
+      border: 1px solid #333;
+      padding: 4px 12px;
+      border-radius: 4px;
+      color: #0CCE6B;
+      font-family: monospace;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
+
+    .secret-terminal:hover {
+      border-color: #0CCE6B;
+      box-shadow: 0 0 15px rgba(12, 206, 107, 0.2);
+      transform: translateY(-1px);
+    }
+
+    .blink { animation: cursor-blink 1s step-end infinite; }
+    @keyframes cursor-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+      .footer-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 1.5rem;
+      }
+      .geo-data { display: none; } /* On cache le détail technique sur mobile pour épurer */
+    }
+
+    /* --- SECTION FAQ (Style Bento) --- */
+    .faq-container {
+      max-width: 1100px;
+      margin: 6rem auto 2rem; /* Espace avant le footer */
+      padding: 0 20px;
+    }
+
+    .faq-title {
+      font-size: 2rem;
+      margin-bottom: 2rem;
+      background: linear-gradient(to right, #fff, #666);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 800;
+      text-align: left;
+    }
+
+    .faq-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive auto */
+      gap: 20px;
+    }
+
+    .faq-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 2rem;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .faq-card:hover {
+      border-color: rgba(255, 255, 255, 0.2);
+      transform: translateY(-2px);
+    }
+
+    /* Petit effet de lueur bleu en haut de la carte */
+    .faq-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--blue), transparent);
+      opacity: 0.5;
+    }
+
+    .faq-card h3 {
+      font-size: 1.2rem;
+      color: var(--text-main);
+      margin-top: 0;
+      margin-bottom: 1rem;
+      font-family: 'SF Mono', 'Fira Code', monospace; /* Touche technique */
+    }
+
+    .faq-card p {
+      color: var(--text-muted);
+      line-height: 1.6;
+      font-size: 0.95rem;
+      margin: 0;
+    }
+
+    .faq-card strong {
+      color: var(--blue); /* Les mots clés en bleu Drasiotech */
+      font-weight: 600;
     }
 
   </style>
@@ -904,39 +998,71 @@
     </article>
 
   </div>
+  <section class="faq-container" id="faq">
+
+    <h2 class="faq-title">Documentation Technique</h2>
+
+    <div class="faq-grid">
+
+      <article class="faq-card">
+        <h3>Pourquoi une architecture Edge ?</h3>
+        <p>
+          L'architecture Edge Computing (Serverless) distribue le contenu au plus près de l'utilisateur.
+          Contrairement aux CMS lourds (WordPress), cela garantit un <strong>TTFB inférieur à 50ms</strong> et des Core Web Vitals parfaits,
+          critères décisifs pour le ranking Google en 2026.
+        </p>
+      </article>
+
+      <article class="faq-card">
+        <h3>Comment atteindre Lighthouse 100 ?</h3>
+        <p>
+          Le secret réside dans l'élimination des frameworks (React/Angular) au profit du <strong>Vanilla JS</strong>.
+          Nous utilisons le chargement différé (Lazy Loading), des images WebP et une minification extrême du CSS
+          pour supprimer tout blocage du fil principal (Main Thread).
+        </p>
+      </article>
+
+    </div>
+
+  </section>
 </main>
 
 <footer class="dev-footer">
   <div class="footer-content">
 
     <div class="footer-left">
-      <span class="mono">© 2026 Drasiotech</span>
+      <span>© 2026 Drasiotech</span>
 
-      <span class="separator">|</span>
+      <span class="separator"></span>
 
-      <span class="status-dot"></span>
-      <span class="system-status">Systems Operational</span>
+      <div class="system-status">
+        <div class="status-dot"></div>
+        <span>SYSTEM ONLINE</span>
+      </div>
 
-      <span class="separator">|</span>
-      <span class="geo-data" itemscope itemtype="https://schema.org/Place">
-        REGION: <span itemprop="address" itemscope itemtype="https://schema.org/PostalAddress">
+      <span class="separator"></span>
+
+      <div class="geo-data" itemscope itemtype="https://schema.org/Place" title="Server Location Node">
+        <span class="geo-label">REGION:</span>
+        <span class="geo-value" itemprop="address" itemscope itemtype="https://schema.org/PostalAddress">
           <span itemprop="addressLocality">ORLÉANS-FR</span>
         </span>
-      </span>
-
-      <a href="/snake" class="secret-terminal" aria-label="Accès Backdoor" title="Injecter le Payload (Snake)">
-        <span class="prompt-sign">></span><span class="blink-cursor">_</span>
-      </a>
+      </div>
     </div>
 
-    <div class="footer-links">
-      <a href="https://github.com/NyloodzZ/drasiotech" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="GitHub Repo">
-        <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
-        </svg>
-        <span class="link-text">GitHub</span>
+    <div class="footer-right">
+
+      <a href="https://github.com/NyloodzZ/drasiotech" target="_blank" rel="noopener noreferrer" class="social-link">
+        <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+        <span>Source Code</span>
       </a>
+
+      <a href="/snake" class="secret-terminal" aria-label="Lancer Snake">
+        <span>>_</span><span class="blink">_</span>
+      </a>
+
     </div>
+
   </div>
 </footer>
 
