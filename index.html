@@ -733,8 +733,8 @@
       display: flex;
       align-items: center;
       gap: 15px;
-      color: #a3a3a3; /* AVANT: #666 (Trop sombre) -> APRÈS: #a3a3a3 (Validé) */
-      font-weight: 400;
+      color: #d4d4d4;
+      font-weight: 500;
     }
 
     /* 2. On rend le badge SEO plus lisible */
@@ -744,10 +744,12 @@
       gap: 6px;
       padding: 4px 10px;
       border-radius: 6px;
-      border: 1px solid rgba(255,255,255,0.2); /* Bordure un peu plus visible */
-      color: #a3a3a3; /* Texte plus clair */
+      border: 1px solid rgba(255,255,255,0.3); /* Bordure un peu plus visible */
+      color: #d4d4d4;
       transition: all 0.3s ease;
       cursor: help;
+      background: rgba(255, 255, 255, 0.05);
+      font-weight: 700;
     }
 
     /* 3. On éclarcit les liens à droite */
@@ -756,14 +758,14 @@
       align-items: center;
       gap: 8px;
       text-decoration: none;
-      color: #a3a3a3; /* Pareil ici */
+      color: #d4d4d4; /* Pareil ici */
       transition: color 0.2s ease;
+      font-weight: 500;
     }
-
-    /* Au survol, on passe au blanc pur pour l'effet interactif */
+    /* 3. Au survol : Blanc pur */
     .social-link:hover, .geo-data:hover {
-      color: #ffffff;
-      border-color: var(--blue);
+      color: #ffffff !important;
+      border-color: #ffffff;
     }
 
   </style>
