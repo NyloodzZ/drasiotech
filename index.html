@@ -582,14 +582,6 @@
       gap: 20px;
     }
 
-    /* --- PARTIE GAUCHE (Status & Localisation) --- */
-    .footer-left {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      color: #666; /* Gris discret */
-    }
-
     /* Le point vert qui pulse */
     .system-status {
       display: flex;
@@ -617,19 +609,6 @@
       50% { opacity: 0.5; }
     }
 
-    /* Le Badge SEO "Orléans" (Style Bento) */
-    .geo-data {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      padding: 4px 10px;
-      border-radius: 6px;
-      border: 1px solid rgba(255,255,255,0.1); /* Bordure Bento */
-      color: #888;
-      transition: all 0.3s ease;
-      cursor: help;
-    }
-
     .geo-data:hover {
       background: rgba(255,255,255,0.05);
       border-color: #0070f3; /* Devient bleu au survol */
@@ -646,17 +625,6 @@
       align-items: center;
       gap: 20px;
     }
-
-    .social-link {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      text-decoration: none;
-      color: #666;
-      transition: color 0.2s ease;
-    }
-
-    .social-link:hover { color: #ededed; }
 
     /* Le Terminal Snake */
     .secret-terminal {
@@ -756,6 +724,46 @@
     .highlight {
       color: var(--blue);
       font-weight: 600;
+    }
+
+    /* --- CORRECTION CONTRASTE (ACCESSIBILITÉ 100/100) --- */
+
+    /* 1. On éclarcit le texte de gauche */
+    .footer-left {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      color: #a3a3a3; /* AVANT: #666 (Trop sombre) -> APRÈS: #a3a3a3 (Validé) */
+      font-weight: 400;
+    }
+
+    /* 2. On rend le badge SEO plus lisible */
+    .geo-data {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 6px;
+      border: 1px solid rgba(255,255,255,0.2); /* Bordure un peu plus visible */
+      color: #a3a3a3; /* Texte plus clair */
+      transition: all 0.3s ease;
+      cursor: help;
+    }
+
+    /* 3. On éclarcit les liens à droite */
+    .social-link {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      color: #a3a3a3; /* Pareil ici */
+      transition: color 0.2s ease;
+    }
+
+    /* Au survol, on passe au blanc pur pour l'effet interactif */
+    .social-link:hover, .geo-data:hover {
+      color: #ffffff;
+      border-color: var(--blue);
     }
 
   </style>
