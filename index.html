@@ -22,8 +22,8 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://drasiotech.dev/og-image.jpg">
 
-  <link rel="icon" href="/favicon.png" type="image/png" sizes="32x32">
-  <link rel="icon" href="/icon.png" type="image/png" sizes="192x192">
+  <link rel="icon" href="favicon.png" type="image/png" sizes="32x32">
+  <link rel="icon" href="icon.png" type="image/png" sizes="192x192">
 
   <script type="application/ld+json">
     {
@@ -642,6 +642,30 @@
       }
     }
 
+    /* Ajoute ça à ton CSS existant */
+
+    .geo-data {
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 0.75rem; /* Plus petit que le reste */
+      color: #444; /* Gris très sombre pour être discret mais lisible par Google */
+      transition: color 0.3s ease;
+      text-decoration: none;
+      border: 1px solid rgba(255,255,255,0.05);
+      padding: 2px 8px;
+      border-radius: 4px;
+      background: rgba(0,0,0,0.3);
+    }
+
+    .geo-data:hover {
+      color: #666;
+      border-color: rgba(255,255,255,0.1);
+    }
+
+    /* Ajustement Mobile : On cache les détails non critiques si besoin */
+    @media (max-width: 600px) {
+      .geo-data { display: none; } /* Google l'a déjà indexé sur Desktop, c'est ok */
+    }
+
   </style>
 </head>
 
@@ -893,11 +917,17 @@
       <span class="status-dot"></span>
       <span class="system-status">Systems Operational</span>
 
+      <span class="separator">|</span>
+      <span class="geo-data" itemscope itemtype="https://schema.org/Place">
+        REGION: <span itemprop="address" itemscope itemtype="https://schema.org/PostalAddress">
+          <span itemprop="addressLocality">ORLÉANS-FR</span>
+        </span>
+      </span>
+
       <a href="/snake" class="secret-terminal" aria-label="Accès Backdoor" title="Injecter le Payload (Snake)">
         <span class="prompt-sign">></span><span class="blink-cursor">_</span>
       </a>
     </div>
-
 
     <div class="footer-links">
       <a href="https://github.com/NyloodzZ/drasiotech" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="GitHub Repo">
