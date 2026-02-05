@@ -669,40 +669,6 @@
   </style>
 </head>
 
-<script>
-  // Ton ID Analytics
-  const GA_ID = 'G-19HHTVRGXY';
-
-  let analyticsLoaded = false;
-
-  function loadAnalytics() {
-    if (analyticsLoaded) return;
-    analyticsLoaded = true;
-
-    // Création dynamique du script Google
-    const script = document.createElement('script');
-    script.async = true;
-    script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`;
-    document.head.appendChild(script);
-
-    // Configuration
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', GA_ID, { 'anonymize_ip': true });
-
-    console.log('📊 Analytics chargé en mode furtif.');
-  }
-
-  // On charge uniquement si l'utilisateur bouge, scroll ou touche l'écran
-  ['click', 'scroll', 'mousemove', 'touchstart'].forEach(evt =>
-    window.addEventListener(evt, loadAnalytics, { once: true, passive: true })
-  );
-
-  // Sécurité : On charge quand même après 4 secondes si rien ne se passe
-  setTimeout(loadAnalytics, 4000);
-</script>
-
 <body>
 
 <div class="background-grid"></div>

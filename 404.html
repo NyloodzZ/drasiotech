@@ -108,24 +108,5 @@
     >_ Lancer protocole_snake.exe
   </a>
 </div>
-
-<script>
-  const GA_ID = 'G-19HHTVRGXY'; // Ton ID GTM/GA4
-  let analyticsLoaded = false;
-  function loadAnalytics() {
-    if (analyticsLoaded) return;
-    analyticsLoaded = true;
-    const script = document.createElement('script');
-    script.async = true;
-    script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`;
-    document.head.appendChild(script);
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', GA_ID, { 'anonymize_ip': true });
-  }
-  setTimeout(loadAnalytics, 2000); // Charge auto après 2s sur une erreur
-</script>
-
 </body>
 </html>
